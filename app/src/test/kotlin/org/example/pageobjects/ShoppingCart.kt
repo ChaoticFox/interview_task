@@ -5,6 +5,7 @@ import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Condition.exist
 import com.codeborne.selenide.Selenide.element
 import com.codeborne.selenide.Selenide.elements
+import kotlin.test.assertEquals
 
 class ShoppingCart:BasePage() {
     init{
@@ -12,7 +13,7 @@ class ShoppingCart:BasePage() {
     }
 
     fun sumIsValid(sum: Double){
-        assert(sum==convertPrices(element(".cart-total .value").text()))
+        assertEquals(sum,convertPrices(element(".cart-total .value").text()))
     }
 
     fun proceedToCheckout(){

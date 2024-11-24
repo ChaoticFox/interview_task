@@ -2,12 +2,14 @@ package org.example.pageobjects
 
 import BasePage
 import com.codeborne.selenide.Condition
+import com.codeborne.selenide.Condition.visible
 import com.codeborne.selenide.Selenide.element
 import com.codeborne.selenide.selector.ByText
 
 class ProductPage:BasePage() {
 
     fun setCount(finalCount:Int){
+        element("#quantity_wanted").clear()
         element("#quantity_wanted").setValue(finalCount.toString())
     }
 
@@ -22,6 +24,7 @@ class ProductPage:BasePage() {
 
     fun addToCart(){
         element(".add-to-cart").click()
+        element("#blockcart-modal").should(visible)
     }
 
 }
