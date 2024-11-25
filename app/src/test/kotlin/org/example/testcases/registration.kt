@@ -26,7 +26,7 @@ class Registration : BaseTest() {
     private val allValidUser = UserData(
         "Name",
         "Lname",
-        "test21@example.com",
+        "test22@example.com",
         "test@1231#",
         "Street 100 - 28",
         "12345",
@@ -57,18 +57,6 @@ class Registration : BaseTest() {
         loginRegister = LoginRegister()
     }
 
-    fun registerUserPositiveFlow() {
-        topMenu.clickSignIn()
-        loginRegister.proceedToRegistration()
-        loginRegister.fillOnlyRequiredData(allValidUser)
-        topMenu.userSignedIn(allValidUser.firstName + " " + allValidUser.lastName)
-    }
-
-    fun filterByPrice(min: Double, max: Double) {
-        itemList.setPriceFilter(min, max)
-        itemList.checkFilteredByPrice(min, max)
-    }
-
     fun addToCardFromPDP(index: Int, count: Int, currentTotal: Double): Double {
         itemList.openItemByIndex(index)
         productPage.increaseCountWithButtons(count)
@@ -84,14 +72,18 @@ class Registration : BaseTest() {
     //full user journey
     @Test
     fun ujRegisterBuy() {
-        registerUserPositiveFlow()
+        val test = extent.createTest("Example Test")
+        topMenu.clickSignIn()
+        loginRegister.proceedToRegistration()
+        loginRegister.fillOnlyRequiredData(allValidUser)
+        topMenu.userSignedIn(allValidUser.firstName + " " + allValidUser.lastName)
         topMenu.selectItem("Accessories")
         itemList.setSubCategory("Home Accessories")
-        filterByPrice(18.00, 23.00)
+        itemList.filterByPrice(18.00, 23.00)
         //add log which number it was
         //var randomItem = (1..itemList.getItemCount() - 1).shuffled().first()
         var sumOfOrder = 0.0
-        sumOfOrder += addToCardFromPDP(0, 2, sumOfOrder)
+        sumOfOrder= addToCardFromPDP(0, 2, sumOfOrder)
         //bug: after cart overlay closed, user has to press back two times to get to previous page
         productPage.goBackXTimes(".category-top-menu", 2)
         sumOfOrder = addToCardFromPDP(1, 1, sumOfOrder)
@@ -102,5 +94,6 @@ class Registration : BaseTest() {
         //checks order details section
         checkout.checkOrderDetails("Payments by check", "Pick up in-store")
         topMenu.logout()
+        test.pass("Test passed")
     }
 }

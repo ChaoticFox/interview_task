@@ -9,14 +9,14 @@ import org.example.data.UserData
 class Checkout : BasePage() {
 
     fun fillMandatoryAddress(address: String, zip: String, country: String, city: String) {
+        element("#field-id_country").should(enabled).selectOption(country)
         element("#field-address1").setValue(address)
         element("#field-postcode").should(enabled).setValue(zip)
-        element("#field-id_country").should(enabled).selectOption(country)
         element("#field-city").should(enabled).setValue(city)
     }
 
     fun continueToShipping() {
-        element("[name=\"confirm-addresses\"]").doubleClick()
+        element("[name=\"confirm-addresses\"]").click()
         element("[name=\"confirmDeliveryOption\"]").should(visible)
     }
 

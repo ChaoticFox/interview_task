@@ -31,6 +31,10 @@ class ItemList : BasePage() {
         element(".category-sub-menu").find(ByText(subCategory)).click()
         element("#js-product-list-header h1").shouldHave(text(subCategory))
     }
+    fun filterByPrice(min: Double, max: Double) {
+        setPriceFilter(min, max)
+        checkFilteredByPrice(min, max)
+    }
 
     fun setPriceFilter(min: Double, max: Double) {
         val slider = element(".faceted-slider")
