@@ -40,11 +40,11 @@ class Registration : BaseTest() {
         //device switch (only desktop supported)
         when (System.getProperty(("platform"))) {
             "desktop", "tablet-v", "tablet-h", "mobile" -> {
-                Selenide.element("#devices .${System.getProperty("platform")}").click()
+                element("#devices .${System.getProperty("platform")}").click()
             }
 
             else -> {
-                Selenide.element("#devices .desktop").click()
+                element("#devices .desktop").click()
             }
         }
         Selenide.switchTo().frame(element(By.id("framelive")))
@@ -89,7 +89,7 @@ class Registration : BaseTest() {
         itemList.setSubCategory("Home Accessories")
         filterByPrice(18.00, 23.00)
         //add log which number it was
-        var randomItem = (1..itemList.getItemCount() - 1).shuffled().first()
+        //var randomItem = (1..itemList.getItemCount() - 1).shuffled().first()
         var sumOfOrder = 0.0
         sumOfOrder += addToCardFromPDP(0, 2, sumOfOrder)
         //bug: after cart overlay closed, user has to press back two times to get to previous page

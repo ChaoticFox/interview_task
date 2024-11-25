@@ -16,7 +16,7 @@ open class BasePage() {
     }
 
     fun convertPrices(price: String): Double {
-        var priced = price.trim().replace("€", "").toDouble()
+        val priced = price.trim().replace("€", "").toDouble()
         return BigDecimal(priced).setScale(2, RoundingMode.HALF_UP).toDouble()
     }
 
@@ -30,9 +30,5 @@ open class BasePage() {
         }
         element(expectedElement).shouldBe(visible)
 
-    }
-
-    fun doubleClick() {
-        actions().doubleClick().perform()
     }
 }
