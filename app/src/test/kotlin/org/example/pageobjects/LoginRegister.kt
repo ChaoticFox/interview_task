@@ -3,50 +3,62 @@ package org.example.pageobjects
 import BasePage
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Selenide.element
+import org.example.data.UserData
 
 
-class LoginRegister:BasePage() {
-    fun proceedToRegistration(){
+class LoginRegister : BasePage() {
+    fun proceedToRegistration() {
         pageLoaded(element(".page-header"), Condition.innerText("Log in to your account"))
         element(".no-account").click()
+        verifyPageHeader("Create an account")
     }
 
-    fun fillInFirstName(firstName: String){
+    fun fillInFirstName(firstName: String) {
         element("#field-firstname").setValue(firstName)
     }
 
-    fun fillInLastName(lastName: String){
+    fun fillInLastName(lastName: String) {
         element("#field-lastname").setValue(lastName)
     }
 
-    fun fillInEmail(email: String){
+    fun fillInEmail(email: String) {
         element("#field-email").setValue(email)
     }
 
-    fun fillInPassword(password: String){
+    fun fillInPassword(password: String) {
         element("#field-password").setValue(password)
     }
 
-    fun setAgreeToTerms(){
+    fun setAgreeToTerms() {
         element("[name=\"psgdpr\"]").scrollTo()
         //for some reason selenide see this checkbox as invisible
         runJS("arguments[0].click();", element("[name=\"psgdpr\"]"))
     }
 
-    fun setDataPrivacy(){
+    fun setDataPrivacy() {
         element("[name=\"customer_privacy\"]").scrollTo()
         runJS("arguments[0].click();", element("[name=\"customer_privacy\"]"))
     }
 
-    fun saveUser(){
+    fun saveUser() {
         element("[data-link-action=\"save-customer\"]").scrollTo().click()
     }
 
-    fun fillOnlyRequiredValidData(firstName: String, lastName: String, email: String, password: String){
+    /*fun fillOnlyRequiredData(firstName: String, lastName: String, email: String, password: String){
         fillInFirstName(firstName)
         fillInLastName(lastName)
         fillInEmail(email)
         fillInPassword(password)
+        setAgreeToTerms()
+        setDataPrivacy()
+        saveUser()
+    }*/
+
+    fun fillOnlyRequiredData(allValidUserData: UserData) {
+        fillInFirstName(allValidUserData.firstName)
+        fillInLastName(allValidUserData.lastName)
+        fillInEmail(allValidUserData.email)
+        fillInPassword(allValidUserData.password)
         setAgreeToTerms()
         setDataPrivacy()
         saveUser()

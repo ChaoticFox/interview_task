@@ -1,32 +1,33 @@
 package pageobjects
 
 import BasePage
-import com.codeborne.selenide.Condition
-import com.codeborne.selenide.Selenide.*
 import com.codeborne.selenide.Condition.exist
 import com.codeborne.selenide.Condition.text
-import com.codeborne.selenide.Selectors
-import org.openqa.selenium.By
-import org.openqa.selenium.WebElement
-import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.Selectors.byText
+import com.codeborne.selenide.Selenide.element
+import com.codeborne.selenide.selector.ByText
 
-class TopMenu:BasePage(){
+class TopMenu : BasePage() {
 
     fun clickSignIn() {
         element(byText("Sign in")).click()
+        verifyPageHeader("Log in to your account")
     }
 
-    fun userSignedIn(firstname: String, lastname:String){
-        element(".account span").shouldHave(text("$firstname $lastname"))
+    fun userSignedIn(userName: String) {
+        element(".account span").shouldHave(text(userName))
     }
 
-    fun openCard(){
+    fun openCard() {
         element(".shopping-cart").click()
     }
 
-    fun logout(){
+    fun logout() {
         element(".logout").click()
         element(byText("Sign in")).should(exist)
+    }
+
+    fun selectItem(option: String) {
+        element("#top-menu").find(ByText(option)).click()
     }
 }
