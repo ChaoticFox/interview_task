@@ -9,6 +9,7 @@ import org.example.pageobjects.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.openqa.selenium.By
+import com.aventstack.extentreports.Status
 import pageobjects.TopMenu
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -72,7 +73,6 @@ class Registration : BaseTest() {
     //full user journey
     @Test
     fun ujRegisterBuy() {
-        val test = extent.createTest("Example Test")
         topMenu.clickSignIn()
         loginRegister.proceedToRegistration()
         loginRegister.fillOnlyRequiredData(allValidUser)
@@ -80,8 +80,6 @@ class Registration : BaseTest() {
         topMenu.selectItem("Accessories")
         itemList.setSubCategory("Home Accessories")
         itemList.filterByPrice(18.00, 23.00)
-        //add log which number it was
-        //var randomItem = (1..itemList.getItemCount() - 1).shuffled().first()
         var sumOfOrder = 0.0
         sumOfOrder= addToCardFromPDP(0, 2, sumOfOrder)
         //bug: after cart overlay closed, user has to press back two times to get to previous page
@@ -94,6 +92,6 @@ class Registration : BaseTest() {
         //checks order details section
         checkout.checkOrderDetails("Payments by check", "Pick up in-store")
         topMenu.logout()
-        test.pass("Test passed")
+        ExtentReportListener.extentTest?.log(Status.PASS, "UJ Register - Buy passed")
     }
 }

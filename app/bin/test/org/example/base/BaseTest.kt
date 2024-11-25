@@ -1,25 +1,22 @@
 package org.example.base
 
-import com.aventstack.extentreports.ExtentReports
+import ExtentReportListener
 import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.WebDriverRunner
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.*
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
-import com.aventstack.extentreports.reporter.ExtentSparkReporter
+import org.junit.jupiter.api.extension.ExtendWith
 
+
+@ExtendWith(ExtentReportListener::class)
 open class BaseTest() {
     companion object {
-        lateinit var extent: ExtentReports
-        lateinit var spark: ExtentSparkReporter
+        private lateinit var driver: WebDriver
         @JvmStatic
         @BeforeAll
         fun setUp() {
-            spark = ExtentSparkReporter("report/spark.html")
-            extent = ExtentReports()
-            extent.attachReporter(spark)
             Configuration.timeout = 12000
             Configuration.baseUrl = "https://demo.prestashop.com/#/en/front"
             Configuration.browser = System.getenv("BROWSER") ?: "chrome"
@@ -29,15 +26,15 @@ open class BaseTest() {
                 setExperimentalOption("prefs", mapOf("autofill.profile_enabled" to false))
             }
 
-            val driver = createWebDriver(Configuration.browser, options)
+            driver = createWebDriver(Configuration.browser, options)
             WebDriverRunner.setWebDriver(driver)
             WebDriverRunner.getWebDriver().manage().window().maximize()
         }
 
         @JvmStatic
         @AfterAll
-        fun tearDown() {
-            extent.flush()
+        fun finalTearDown() {
+            driver.quit()
         }
 
         private fun createWebDriver(browser: String, options: ChromeOptions): WebDriver {
@@ -53,5 +50,15 @@ open class BaseTest() {
                 else -> throw IllegalArgumentException("Unsupported browser: $browser")
             }
         }
+    }
+
+    @BeforeEach
+    fun setUpTest(testInfo: TestInfo){
+        ExtentReportListener.createTest(testInfo.displayName)
+    }
+
+    @AfterEach
+    fun tearDown(){
+        ExtentReportListener.flush()
     }
 }
